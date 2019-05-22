@@ -3,11 +3,11 @@ package me.eslamfathy.billionaire.stages;
 import me.eslamfathy.billionaire.model.Player;
 
 public class MainMenuStage implements Stage, Displayable {
-    public void execute(Player player) {
-
+    public Player execute(Player player) {
+        return new Player();
     }
 
-    public void display(Player player) {
-
+    public String display(Player player) {
+        return null;
     }
 }

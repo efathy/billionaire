@@ -6,12 +6,12 @@ import java.io.IOException;
 
 public class PlayerService {
 
-    private Player create(String name){
+    public Player create(String name){
         // TODO: 2019-05-22  add implementation
         return new Player();
     }
 
-    public Player load(String name){
+    public Player load(String name) throws IOException{
         // TODO: 2019-05-22  add implementation
         return new Player();
     }

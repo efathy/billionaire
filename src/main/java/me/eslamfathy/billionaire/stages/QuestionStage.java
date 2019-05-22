@@ -1,13 +1,21 @@
 package me.eslamfathy.billionaire.stages;
 
 import me.eslamfathy.billionaire.model.Player;
+import me.eslamfathy.billionaire.model.Question;
 
 public class QuestionStage implements Stage, Displayable {
-    public void execute(Player player) {
+
+    private Question question;
+
+    public QuestionStage(Question question){
 
     }
 
-    public void display(Player player) {
+    public Player execute(Player player) {
+        return new Player();
+    }
 
+    public String display(Player player) {
+        return null;
     }
 }
