@@ -11,8 +11,16 @@ import java.io.IOException;
 public class GameLoadingState implements State {
     private OutputUtils outputUtils = new OutputUtils();
     private GameContextService gameContextService = new GameContextService();
-    private PresenterService presenterService = new PresenterService();
+    private PresenterService presenterService;
     private LoggerUtils loggerUtils = new LoggerUtils();
+
+    public GameLoadingState() {
+        this.presenterService = new PresenterService();
+    }
+
+    public GameLoadingState(PresenterService presenterService){
+        this.presenterService = presenterService;
+    }
 
     @Override
     public void start(GameContext gameContext) {

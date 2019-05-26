@@ -17,6 +17,7 @@ public class GameContextService {
 
     private FileUtils fileUtils = new FileUtils();
     private QuestionsGenerator questionsGenerator = new QuestionsGenerator();
+    private static GameCreationState gameCreationState;
 
     public void initialize(GameContext gameContext) {
         gameContext.getStates().add(new PromoState());
