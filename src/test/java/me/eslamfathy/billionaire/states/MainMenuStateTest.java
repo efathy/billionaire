@@ -1,39 +1,46 @@
 package me.eslamfathy.billionaire.states;
 
+import me.eslamfathy.billionaire.model.GameContext;
+import me.eslamfathy.billionaire.service.PresenterService;
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({PresenterService.class})
 public class MainMenuStateTest {
+
+    @Mock
+    private PresenterService presenterService;
+
     @Test
-    public void start() {
+    public void startNewGame() {
+        PowerMockito.mockStatic(PresenterService.class);
+        Mockito.when(PresenterService.getInstance()).thenReturn(presenterService);
+        Mockito.when(presenterService.askMainMenuChoices(2)).thenReturn(1);
+
+        MainMenuState mainMenuState = new MainMenuState();
+        GameContext gameContext = new GameContext();
+        mainMenuState.start(gameContext);
+
+        Assert.assertTrue(gameContext.getStates().peek() instanceof GameCreationState);
     }
 
-//    @Test
-//    public void execute() {
-//        MainMenuState mainMenuStage = new MainMenuState();
-//        Player player = mainMenuStage.execute(null, );
-//        assertTrue(player.getStates().size() > 0);
-//    }
-//
-//    @Test
-//    public void executeNewGame() {
-//        MainMenuState mainMenuStage = new MainMenuState();
-//        Player player = mainMenuStage.execute(null, );
-//        // TODO: 2019-05-23 add test
-//        assertTrue(player.getStates().size() > 0);
-//    }
-//
-//    @Test
-//    public void executeLoadGame() {
-//        MainMenuState mainMenuStage = new MainMenuState();
-//        Player player = mainMenuStage.execute(null, );
-//        // TODO: 2019-05-23 add test
-//        assertTrue(player.getStates().size() > 0);
-//    }
-//
-//    @Test
-//    public void display() {
-//        MainMenuState mainMenuStage = new MainMenuState();
-//        String display = mainMenuStage.display(new Player());
-//        assertTrue(display != null && !display.isEmpty());
-//    }
+    @Test
+    public void startLoadGame() {
+        PowerMockito.mockStatic(PresenterService.class);
+        Mockito.when(PresenterService.getInstance()).thenReturn(presenterService);
+        Mockito.when(presenterService.askMainMenuChoices(2)).thenReturn(2);
+
+        MainMenuState mainMenuState = new MainMenuState();
+        GameContext gameContext = new GameContext();
+        mainMenuState.start(gameContext);
+
+        Assert.assertTrue(gameContext.getStates().peek() instanceof GameLoadingState);
+    }
 }

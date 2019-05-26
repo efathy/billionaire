@@ -1,10 +1,11 @@
 package me.eslamfathy.billionaire.model;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Question {
+public class Question implements Serializable {
     private String statement;
-    private Map choices;
+    private Map<String, String> choices;
     private Integer correctAnswer;
     private String answerExplanation;
     private Prize prize;
@@ -17,7 +18,7 @@ public class Question {
         this.statement = statement;
     }
 
-    public Map getChoices() {
+    public Map<String, String> getChoices() {
         return choices;
     }
 

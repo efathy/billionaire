@@ -5,12 +5,9 @@ import me.eslamfathy.billionaire.service.GameContextService;
 import me.eslamfathy.billionaire.service.PresenterService;
 
 public class MainMenuState implements State {
-    private PresenterService presenterService = new PresenterService();
-    private GameContextService gameContextService = new GameContextService();
-
     @Override
     public void start(GameContext gameContext) {
-        Integer choice = presenterService.askMainMenuChoices();
-        gameContextService.addNextState(gameContext, choice == 1 ? new GameCreationState() : new GameLoadingState());
+        Integer choice = PresenterService.getInstance().askMainMenuChoices(2);
+        GameContextService.getInstance().addNextState(gameContext, choice == 1 ? new GameCreationState() : new GameLoadingState());
     }
 }

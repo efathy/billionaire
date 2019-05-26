@@ -16,8 +16,17 @@ import java.util.stream.Collectors;
 public class GameContextService {
 
     private FileUtils fileUtils = new FileUtils();
-    private QuestionsGenerator questionsGenerator = new QuestionsGenerator();
-    private static GameCreationState gameCreationState;
+    private static GameContextService gameContextService;
+
+    private GameContextService() {
+    }
+
+    public static GameContextService getInstance() {
+        if (gameContextService == null) {
+            gameContextService = new GameContextService();
+        }
+        return gameContextService;
+    }
 
     public void initialize(GameContext gameContext) {
         gameContext.getStates().add(new PromoState());
@@ -39,7 +48,7 @@ public class GameContextService {
     }
 
     public GameContext createNewGame(String playerName) {
-        if(playerName != null) {
+        if (playerName != null) {
             GameContext gameContext = new GameContext();
             gameContext.getPlayer().setName(playerName);
             addQuestionsStates(gameContext);
@@ -58,14 +67,14 @@ public class GameContextService {
         String playerName = gameContext.getPlayer().getName();
         if (playerName != null) {
             fileUtils.save(gameContext, Constants.SAVE_PATH, fileUtils.getSaveFileName(playerName));
-        } else{
-            throw new IOException("Invalid file name" );
+        } else {
+            throw new IOException("Invalid file name");
         }
     }
 
 
     public void addQuestionsStates(GameContext gameContext) {
-        Queue<Question> questions = questionsGenerator.generate();
+        Queue<Question> questions = QuestionsGenerator.getInstance().generate();
         List<QuestionState> questionStates = questions.stream().map(QuestionState::new).collect(Collectors.toList());
         gameContext.getStates().addAll(questionStates);
     }

@@ -40,92 +40,79 @@ public class GameContextServiceTest {
 
     @Test
     public void createPlayerWithNullName() {
-        GameContextService gameContextService = new GameContextService();
-        assertNull(gameContextService.createNewGame(null));
+        assertNull(GameContextService.getInstance().createNewGame(null));
     }
 
     @Test
     public void createPlayerWithName() {
-        GameContextService gameContextService = new GameContextService();
-        assertNotNull(gameContextService.createNewGame("Joe"));
+        assertNotNull(GameContextService.getInstance().createNewGame("Joe"));
     }
 
     @Test(expected = FileNotFoundException.class)
     public void loadPlayerNullName() throws IOException, ClassNotFoundException {
-        GameContextService gameContextService = new GameContextService();
-        assertNull(gameContextService.load(null));
+        assertNull(GameContextService.getInstance().load(null));
     }
 
     @Test(expected = FileNotFoundException.class)
     public void loadPlayerNotExist() throws IOException, ClassNotFoundException {
-        GameContextService gameContextService = new GameContextService();
-        gameContextService.load("Jane");
+        GameContextService.getInstance().load("Jane");
     }
 
     @Test
     public void loadPlayerExist() throws IOException, ClassNotFoundException {
-        GameContextService gameContextService = new GameContextService();
         GameContext gameContext = new GameContext();
         gameContext.getPlayer().setName("Jane");
-        gameContextService.save(gameContext);
-        assertNotNull(gameContextService.load("Jane"));
+        GameContextService.getInstance().save(gameContext);
+        assertNotNull(GameContextService.getInstance().load("Jane"));
     }
 
     @Test(expected = IOException.class)
     public void loadPlayerException() throws IOException, ClassNotFoundException {
-        GameContextService gameContextService = new GameContextService();
-        assertNull(gameContextService.load("Jane"));
+        assertNull(GameContextService.getInstance().load("Jane"));
     }
 
     @Test(expected = IOException.class)
     public void savePlayerNullName() throws IOException {
-        GameContextService gameContextService = new GameContextService();
-        gameContextService.save(new GameContext());
+        GameContextService.getInstance().save(new GameContext());
     }
 
     @Test(expected = IOException.class)
     public void savePlayerException() throws IOException {
-        GameContextService gameContextService = new GameContextService();
-        gameContextService.save(new GameContext());
+        GameContextService.getInstance().save(new GameContext());
     }
 
     @Test
     public void initialize() {
-        GameContextService gameContextService = new GameContextService();
         GameContext gameContext = new GameContext();
-        gameContextService.initialize(gameContext);
+        GameContextService.getInstance().initialize(gameContext);
         assertTrue(gameContext.getStates().peek() instanceof PromoState);
     }
 
     @Test
     public void addNextState() {
-        GameContextService gameContextService = new GameContextService();
         GameContext gameContext = new GameContext();
-        gameContextService.addNextState(gameContext, new WinnerState());
+        GameContextService.getInstance().addNextState(gameContext, new WinnerState());
         assertTrue(gameContext.getStates().peek() instanceof WinnerState);
     }
 
     @Test
     public void goBackToMainMenu() {
-        GameContextService gameContextService = new GameContextService();
         GameContext gameContext = new GameContext();
-        gameContextService.goBackToMainMenu(gameContext);
+        GameContextService.getInstance().goBackToMainMenu(gameContext);
         assertTrue(gameContext.getStates().peek() instanceof MainMenuState);
     }
 
     @Test
     public void gotToResult() {
-        GameContextService gameContextService = new GameContextService();
         GameContext gameContext = new GameContext();
-        gameContextService.gotToResult(gameContext);
+        GameContextService.getInstance().gotToResult(gameContext);
         assertTrue(gameContext.getStates().peek() instanceof ResultState);
     }
 
     @Test
     public void addQuestionsStates() {
-        GameContextService gameContextService = new GameContextService();
         GameContext gameContext = new GameContext();
-        gameContextService.addQuestionsStates(gameContext);
+        GameContextService.getInstance().addQuestionsStates(gameContext);
         assertFalse(gameContext.getStates().isEmpty());
     }
 }

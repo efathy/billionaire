@@ -10,6 +10,18 @@ import java.util.Queue;
 
 public class QuestionsGenerator {
 
+    private static QuestionsGenerator questionsGenerator;
+
+    private QuestionsGenerator() {
+    }
+
+    public static QuestionsGenerator getInstance() {
+        if (questionsGenerator == null) {
+            questionsGenerator = new QuestionsGenerator();
+        }
+        return questionsGenerator;
+    }
+
     public Queue<Question> generate() {
         Queue<Question> questions = new LinkedList<>();
 

@@ -5,20 +5,11 @@ import me.eslamfathy.billionaire.service.GameContextService;
 import me.eslamfathy.billionaire.service.PresenterService;
 
 public class GameCreationState implements State {
-    private PresenterService presenterService = new PresenterService();
-    private GameContextService gameContextService = new GameContextService();
-
-    public GameCreationState(){
-    }
-
-    public GameCreationState (PresenterService presenterService){
-        this.presenterService = presenterService;
-    }
 
     @Override
     public void start(GameContext gameContext) {
-        String playerName = presenterService.askPlayerName();
-        gameContext.copy(gameContextService.createNewGame(playerName));
-        gameContextService.addNextState(gameContext, new WelcomePlayerState());
+        String playerName = PresenterService.getInstance().askPlayerName();
+        gameContext.copy(GameContextService.getInstance().createNewGame(playerName));
+        GameContextService.getInstance().addNextState(gameContext, new WelcomePlayerState());
     }
 }

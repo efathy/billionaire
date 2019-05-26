@@ -27,6 +27,12 @@ public class LoggerUtils {
         }
     }
 
+    public void logDebug(String message){
+        if (logger != null) {
+            logger.log(Level.FINE, message);
+        }
+    }
+
     private void checkForLoggingFolder() throws IOException {
         if (!fileUtils.isFolderExists(Constants.LOGGER_ERROR_PATH)) {
             fileUtils.createDirectory(Constants.LOGGER_ERROR_PATH);

@@ -1,5 +1,7 @@
 package me.eslamfathy.billionaire.service;
 
+import me.eslamfathy.billionaire.actions.Action;
+import me.eslamfathy.billionaire.actions.ActionsFactory;
 import me.eslamfathy.billionaire.model.GameContext;
 import me.eslamfathy.billionaire.model.Player;
 import me.eslamfathy.billionaire.model.Question;
@@ -10,19 +12,23 @@ import me.eslamfathy.billionaire.utils.FileUtils;
 import me.eslamfathy.billionaire.utils.OutputUtils;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PresenterService {
     private OutputUtils outputUtils = new OutputUtils();
-    private PlayerService playerService = new PlayerService();
     private FileUtils fileUtils = new FileUtils();
+    private static PresenterService presenterService;
 
-    public PresenterService(){}
+    private PresenterService() {
+    }
 
-    public PresenterService(PlayerService playerService) {
-        this.playerService = playerService;
+    public static PresenterService getInstance() {
+        if (presenterService == null) {
+            presenterService = new PresenterService();
+        }
+        return presenterService;
     }
 
     public void sayPromo() {
@@ -35,15 +41,18 @@ public class PresenterService {
         outputUtils.sleep(1.0);
     }
 
-    public Integer askMainMenuChoices() {
+    public Integer askMainMenuChoices(Integer numberOfChoices) {
         outputUtils.displayByMessageKey("main.menu.state");
-        return playerService.choose();
-        //TODO if player didn't answer correctly
+        Integer choice = PlayerService.getInstance().choose();
+        if (choice < 0 || choice > numberOfChoices) {
+            choice = askMainMenuChoices(numberOfChoices);
+        }
+        return choice;
     }
 
     public String askPlayerName() {
         outputUtils.displayByMessageKey("player.name.state");
-        return playerService.reply();
+        return PlayerService.getInstance().reply();
     }
 
     public void welcomePlayer(Player player) {
@@ -54,47 +63,49 @@ public class PresenterService {
     public String askLoadFileName() throws IOException {
         List<String> savedFiles = fileUtils.getSavedFiles(Constants.SAVE_PATH);
         outputUtils.display(savedFiles.stream().map(String::valueOf).collect(Collectors.joining()));
-        return playerService.reply();
-        //TODO if player didn't answer correctly
-    }
-
-    public boolean respondQuestionAnswer(Question question, Integer choice) {
-        boolean correctAnswer = isCorrectAnswer(question, choice);
-        if (correctAnswer) {
-            outputUtils.displayByMessageKey("question.state.correct.answer");
-            outputUtils.display(question.getAnswerExplanation());
-        } else {
-            outputUtils.displayByMessageKey("question.state.wrong.answer");
+        String fileName = PlayerService.getInstance().reply();
+        if (!savedFiles.contains(fileName)) {
+            fileName = askLoadFileName();
         }
-        outputUtils.sleep(3.0);
-        return correctAnswer;
+        return fileName;
     }
 
-    private boolean isCorrectAnswer(Question question, Integer answer) {
+    public void respondCorrectAnswer(Question question) {
+        outputUtils.displayByMessageKey("question.state.correct.answer");
+        if (question.getAnswerExplanation() != null) {
+            outputUtils.display(question.getAnswerExplanation());
+        }
+        outputUtils.sleep(2.0);
+    }
+
+    public void respondWrongAnswer() {
+        outputUtils.displayByMessageKey("question.state.wrong.answer");
+        outputUtils.sleep(2.0);
+    }
+
+    public boolean isCorrectAnswer(Question question, Integer answer) {
         return question.getCorrectAnswer().equals(answer);
     }
 
-    public boolean isValidChoice(Question question, Integer choice) {
-        return question.getChoices().containsKey(choice);
+    public Action askQuestion(Question question) {
+        displayQuestion(question);
+        return getChoiceAction(question);
     }
 
-    public Integer askQBillionaireQuestionChoice(Question question, GameContext gameContext) {
-        outputUtils.displayByMessageKey("question.state", String.valueOf(question.getPrize().getPrizeValue()), question
-                .getStatement(), Arrays.toString(question.getChoices().entrySet().toArray()));
-        return getValidChoice(question, gameContext);
+    private void displayQuestion(Question question) {
+        List<String> messageArgs = new ArrayList<>();
+        messageArgs.add(String.valueOf(question.getPrize().getPrizeValue()));
+        messageArgs.add(question.getStatement());
+        messageArgs.addAll(question.getChoices().values());
+        outputUtils.displayByMessageKey("question.state", messageArgs.toArray(new String[0]));
     }
 
-    private Integer getValidChoice(Question question, GameContext gameContext) {
-        Integer choice = -1;
-        boolean validChoice = false;
-        while (!validChoice) {
-            choice = playerService.choose();
-            validChoice = isValidChoice(question, choice);
-            if (!validChoice) {
-                outputUtils.displayByMessageKey("question.state.invalid.choice", gameContext.getPlayer().getName());
-            }
+    private Action getChoiceAction(Question question) {
+        try {
+            return ActionsFactory.getInstance().getAction(question, PlayerService.getInstance().reply());
+        } catch (IllegalArgumentException e) {
+            return getChoiceAction(question);
         }
-        return choice;
     }
 
     public void sayResult(Player player) {

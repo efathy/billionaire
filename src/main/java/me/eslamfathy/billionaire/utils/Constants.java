@@ -8,4 +8,6 @@ public class Constants {
     public static final String LOGGER_ERROR_PATH = "logs/";
     public static final String LOGGER_CLASS_NAME = "Billionaire";
     public static final String PRESENTER_NAME = "Eslam Fathy";
+    public static final String SAVE_KEY = "S";
+    public static final String QUIT_KEY = "Q";
 }

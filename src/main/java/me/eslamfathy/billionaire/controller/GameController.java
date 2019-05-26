@@ -6,11 +6,9 @@ import me.eslamfathy.billionaire.states.State;
 
 public class GameController {
 
-    private GameContextService gameContextService = new GameContextService();
-
     public void start() {
         GameContext gameContext = new GameContext();
-        gameContextService.initialize(gameContext);
+        GameContextService.getInstance().initialize(gameContext);
 
         while (!gameContext.getStates().isEmpty()){
             State currentState  = gameContext.getStates().poll();

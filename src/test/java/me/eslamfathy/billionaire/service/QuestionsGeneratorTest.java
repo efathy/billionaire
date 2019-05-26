@@ -11,8 +11,7 @@ public class QuestionsGeneratorTest {
 
     @Test
     public void generate() {
-        QuestionsGenerator questionsGenerator = new QuestionsGenerator();
-        Queue<Question> questions = questionsGenerator.generate();
+        Queue<Question> questions = QuestionsGenerator.getInstance().generate();
         assertFalse(questions.isEmpty());
     }
 }

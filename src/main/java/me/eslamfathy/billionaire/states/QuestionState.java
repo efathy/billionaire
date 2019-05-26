@@ -1,13 +1,11 @@
 package me.eslamfathy.billionaire.states;
 
+import me.eslamfathy.billionaire.actions.Action;
 import me.eslamfathy.billionaire.model.GameContext;
 import me.eslamfathy.billionaire.model.Question;
-import me.eslamfathy.billionaire.service.GameContextService;
 import me.eslamfathy.billionaire.service.PresenterService;
 
 public class QuestionState implements State {
-    private PresenterService presenterService = new PresenterService();
-    private GameContextService gameContextService = new GameContextService();
 
     private Question question;
 
@@ -21,11 +19,7 @@ public class QuestionState implements State {
 
     @Override
     public void start(GameContext gameContext) {
-        Integer choice = presenterService.askQBillionaireQuestionChoice(this.question, gameContext);
-        boolean correctAnswer = presenterService.respondQuestionAnswer(this.question, choice);
-        if (!correctAnswer) {
-            gameContextService.gotToResult(gameContext);
-        }
+        Action choiceAction = PresenterService.getInstance().askQuestion(this.question);
+        choiceAction.doAction(gameContext, question);
     }
-
 }
