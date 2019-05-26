@@ -1,18 +1,21 @@
 package me.eslamfathy.billionaire.states;
 
-public class ResultStateTest {
+import me.eslamfathy.billionaire.model.GameContext;
+import me.eslamfathy.billionaire.model.Prize;
+import me.eslamfathy.billionaire.model.Question;
+import org.junit.Assert;
+import org.junit.Test;
 
-//    @Test
-//    public void execute() {
-//        ResultState resultStage = new ResultState();
-//        Player player = resultStage.execute(new Player(), );
-//        assertTrue(player.getStates().isEmpty());
-//    }
-//
-//    @Test
-//    public void display() {
-//        ResultState resultStage = new ResultState();
-//        String display = resultStage.display(new Player());
-//        assertTrue(display != null && !display.isEmpty());
-//    }
+public class ResultStateTest {
+    @Test
+    public void start() {
+        GameContext gameContext = new GameContext();
+        Question question = new Question();
+        question.setPrize(Prize.A);
+        gameContext.getPlayer().setLastState(new QuestionState(question));
+
+        ResultState resultStage = new ResultState();
+        resultStage.start(gameContext);
+        Assert.assertTrue(gameContext.getStates().peek() instanceof MainMenuState);
+    }
 }

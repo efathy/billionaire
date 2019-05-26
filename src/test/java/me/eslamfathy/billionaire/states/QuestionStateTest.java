@@ -29,6 +29,10 @@ public class QuestionStateTest {
         // TODO: 2019-05-23
     }
 
+    @Test
+    public void start() {
+    }
+
 //    @Test
 //    public void display() {
 //        QuestionState questionStage = new QuestionState(new Question());

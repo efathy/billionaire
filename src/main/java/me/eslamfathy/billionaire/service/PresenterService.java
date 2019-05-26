@@ -19,6 +19,12 @@ public class PresenterService {
     private PlayerService playerService = new PlayerService();
     private FileUtils fileUtils = new FileUtils();
 
+    public PresenterService(){}
+
+    public PresenterService(PlayerService playerService) {
+        this.playerService = playerService;
+    }
+
     public void sayPromo() {
         outputUtils.displayByMessageKey("welcome.state.game.promo");
         outputUtils.sleep(1.0);
@@ -38,6 +44,11 @@ public class PresenterService {
     public String askPlayerName() {
         outputUtils.displayByMessageKey("player.name.state");
         return playerService.reply();
+    }
+
+    public void welcomePlayer(Player player) {
+        outputUtils.displayByMessageKey("welcome.player.state", player.getName());
+        outputUtils.sleep(2.0);
     }
 
     public String askLoadFileName() throws IOException {
@@ -67,15 +78,9 @@ public class PresenterService {
         return question.getChoices().containsKey(choice);
     }
 
-    public void welcomePlayer(Player player) {
-        outputUtils.displayByMessageKey("welcome.player.state", player.getName());
-        outputUtils.sleep(2.0);
-    }
-
     public Integer askQBillionaireQuestionChoice(Question question, GameContext gameContext) {
-        outputUtils
-                .displayByMessageKey("question.state", String.valueOf(question.getPrize().getPrizeValue()),
-                        question.getStatement(), Arrays.toString(question.getChoices().entrySet().toArray()));
+        outputUtils.displayByMessageKey("question.state", String.valueOf(question.getPrize().getPrizeValue()), question
+                .getStatement(), Arrays.toString(question.getChoices().entrySet().toArray()));
         return getValidChoice(question, gameContext);
     }
 

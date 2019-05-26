@@ -2,12 +2,9 @@ package me.eslamfathy.billionaire.states;
 
 import org.junit.Test;
 
-public class GameSavingStateTest {
+import static org.junit.Assert.*;
 
-    @Test
-    public void execute() {
-        // TODO: 2019-05-23
-    }
+public class GameLoadingStateTest {
 
     @Test
     public void start() {

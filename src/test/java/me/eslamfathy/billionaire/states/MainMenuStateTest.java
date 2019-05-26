@@ -1,6 +1,11 @@
 package me.eslamfathy.billionaire.states;
 
+import org.junit.Test;
+
 public class MainMenuStateTest {
+    @Test
+    public void start() {
+    }
 
 //    @Test
 //    public void execute() {
