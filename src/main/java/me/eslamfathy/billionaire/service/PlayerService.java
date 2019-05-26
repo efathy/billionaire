@@ -1,22 +1,16 @@
 package me.eslamfathy.billionaire.service;
 
-import me.eslamfathy.billionaire.model.Player;
-
-import java.io.IOException;
+import me.eslamfathy.billionaire.utils.InputUtils;
 
 public class PlayerService {
 
-    public Player create(String name){
-        // TODO: 2019-05-22  add implementation
-        return new Player();
+    private InputUtils inputUtils = new InputUtils();
+
+    public Integer choose() {
+        return inputUtils.readInteger();
     }
 
-    public Player load(String name) throws IOException{
-        // TODO: 2019-05-22  add implementation
-        return new Player();
-    }
-
-    public void save(Player player) throws IOException {
-        // TODO: 2019-05-22  add implementation
+    public String reply() {
+        return inputUtils.readString();
     }
 }

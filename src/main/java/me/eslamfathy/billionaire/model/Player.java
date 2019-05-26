@@ -1,26 +1,19 @@
 package me.eslamfathy.billionaire.model;
 
-import me.eslamfathy.billionaire.stages.Stage;
+import me.eslamfathy.billionaire.states.State;
 
-import java.util.Queue;
+import java.io.Serializable;
 
-public class Player {
-    private String name;
-    private Queue<Stage> stages;
+public class Player extends Human implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-    public String getName() {
-        return name;
+    private State lastState;
+
+    public State getLastState() {
+        return lastState;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Queue<Stage> getStages() {
-        return stages;
-    }
-
-    public void setStages(Queue<Stage> stages) {
-        this.stages = stages;
+    public void setLastState(State lastState) {
+        this.lastState = lastState;
     }
 }

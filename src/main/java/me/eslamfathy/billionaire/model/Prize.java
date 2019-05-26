@@ -1,22 +1,22 @@
 package me.eslamfathy.billionaire.model;
 
 public enum Prize {
-    A(100),
-    B(500),
-    C(1000),
-    D(16000),
-    E(32000),
-    F(64000),
-    G(500000),
-    H(1000000);
+    A(100000),
+    B(500000),
+    C(1000000),
+    D(16000000),
+    E(32000000),
+    F(64000000),
+    G(500000000),
+    H(1000000000);
 
-    private int prizeValue;
+    private long prizeValue;
 
-    Prize(int prizeValue) {
+    Prize(long prizeValue) {
         this.prizeValue = prizeValue;
     }
 
-    public int getPrizeValue() {
+    public long getPrizeValue() {
         return prizeValue;
     }
 }

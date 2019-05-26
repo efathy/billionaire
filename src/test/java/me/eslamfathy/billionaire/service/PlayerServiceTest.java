@@ -1,66 +1,35 @@
 package me.eslamfathy.billionaire.service;
 
-import me.eslamfathy.billionaire.model.Player;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import java.io.IOException;
-
-import static org.junit.Assert.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 public class PlayerServiceTest {
 
-    @Test
-    public void createPlayerWithNullName() {
-        PlayerService playerService = new PlayerService();
-        assertNull(playerService.create(null));
-    }
+
+    private final InputStream originalIn = System.in;
 
     @Test
-    public void createPlayerWithName() {
-        PlayerService playerService = new PlayerService();
-        assertNotNull(playerService.create("Joe"));
-    }
+    public void choose() {
+        ByteArrayInputStream inContent = new ByteArrayInputStream("1".getBytes());
+        System.setIn(inContent);
 
-    @Test
-    public void loadPlayerNullName() throws IOException {
         PlayerService playerService = new PlayerService();
-        assertNull(playerService.load(null));
+        Assert.assertEquals(new Integer(1), playerService.choose());
+
+        System.setIn(originalIn);
     }
 
     @Test
-    public void loadPlayerNotExist() throws IOException {
-        PlayerService playerService = new PlayerService();
-        assertNull(playerService.load("Jane"));
-    }
+    public void reply() {
+        ByteArrayInputStream inContent = new ByteArrayInputStream("Joe".getBytes());
+        System.setIn(inContent);
 
-    @Test
-    public void loadPlayerExist() throws IOException {
         PlayerService playerService = new PlayerService();
-        assertNull(playerService.load("Jane"));
-    }
+        Assert.assertEquals("Joe", playerService.reply());
 
-    @Test(expected = IOException.class)
-    public void loadPlayerException() throws IOException {
-        PlayerService playerService = new PlayerService();
-        assertNull(playerService.load("Jane"));
-    }
-
-    @Test
-    public void savePlayerNullName() throws IOException {
-        PlayerService playerService = new PlayerService();
-        playerService.save(new Player());
-    }
-
-    @Test
-    public void savePlayerExist() throws IOException {
-        PlayerService playerService = new PlayerService();
-        playerService.save(new Player());
-    }
-
-    @Test(expected = IOException.class)
-    public void savePlayerException() throws IOException {
-        PlayerService playerService = new PlayerService();
-        playerService.save(new Player());
+        System.setIn(originalIn);
     }
 }
