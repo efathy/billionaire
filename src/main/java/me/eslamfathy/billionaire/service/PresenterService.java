@@ -2,10 +2,7 @@ package me.eslamfathy.billionaire.service;
 
 import me.eslamfathy.billionaire.actions.Action;
 import me.eslamfathy.billionaire.actions.ActionsFactory;
-import me.eslamfathy.billionaire.model.GameContext;
-import me.eslamfathy.billionaire.model.Player;
-import me.eslamfathy.billionaire.model.Prize;
-import me.eslamfathy.billionaire.model.Question;
+import me.eslamfathy.billionaire.model.*;
 import me.eslamfathy.billionaire.states.GameCreationState;
 import me.eslamfathy.billionaire.states.GameLoadingState;
 import me.eslamfathy.billionaire.states.State;
@@ -35,17 +32,18 @@ public class PresenterService {
     }
 
     public void sayPromo() {
-        outputUtils.displayByMessageKey("welcome.state.game.promo");
+        outputUtils.displayAsciiStatementByMessageKey(15, "welcome.state.game.promo");
         outputUtils.sleep(1.0);
     }
 
     public void introducePresenter(GameContext gameContext) {
-        outputUtils.displayByMessageKey("welcome.state.presenter.name", gameContext.getPresenter().getName());
+        outputUtils.displayColoredStatement(Color.BLUE, "welcome.state.presenter.name", gameContext.getPresenter()
+                                                                                                   .getName());
         outputUtils.sleep(1.0);
     }
 
     public State askMainMenuAndGetNextState() {
-        outputUtils.displayByMessageKey("main.menu.state");
+        outputUtils.displayColoredStatement(Color.BLUE, "main.menu.state");
         String choice = PlayerService.getInstance().reply();
         if (!mainMenuChoices.containsKey(choice)) {
             return askMainMenuAndGetNextState();
@@ -61,20 +59,19 @@ public class PresenterService {
     }
 
     public String askPlayerName() {
-        outputUtils.displayByMessageKey("player.name.state");
+        outputUtils.displayColoredStatement(Color.BLUE, "player.name.state");
         return PlayerService.getInstance().reply();
     }
 
     public void welcomePlayer(Player player) {
-        outputUtils.displayByMessageKey("welcome.player.state", player.getName());
+        outputUtils.displayColoredStatement(Color.BLUE, "welcome.player.state", player.getName());
         outputUtils.sleep(2.0);
     }
 
     public String askLoadFileName() throws IOException {
         List<String> savedFiles = fileUtils.getSavedFiles(Constants.SAVE_PATH);
-        outputUtils
-                .display("Saves Available: " + savedFiles.stream().map(String::valueOf)
-                                                         .collect(Collectors.joining(" - ")));
+        outputUtils.display(
+                "Saves Available: " + savedFiles.stream().map(String::valueOf).collect(Collectors.joining(" - ")));
         String fileName = PlayerService.getInstance().reply();
         if (!savedFiles.contains(fileName)) {
             fileName = askLoadFileName();
@@ -83,7 +80,7 @@ public class PresenterService {
     }
 
     public void respondCorrectAnswer(Question question) {
-        outputUtils.displayByMessageKey("question.state.correct.answer");
+        outputUtils.displayColoredStatement(Color.GREEN, "question.state.correct.answer");
         if (question.getAnswerExplanation() != null) {
             outputUtils.display(question.getAnswerExplanation());
         }
@@ -91,7 +88,7 @@ public class PresenterService {
     }
 
     public void respondWrongAnswer() {
-        outputUtils.displayByMessageKey("question.state.wrong.answer");
+        outputUtils.displayColoredStatement(Color.RED, "question.state.wrong.answer");
         outputUtils.sleep(2.0);
     }
 
@@ -109,7 +106,7 @@ public class PresenterService {
         messageArgs.add(String.valueOf(question.getPrize().getPrizeValue()));
         messageArgs.add(question.getStatement());
         messageArgs.addAll(question.getChoices().values());
-        outputUtils.displayByMessageKey("question.state", messageArgs.toArray(new String[0]));
+        outputUtils.displayColoredStatement(Color.BLUE, "question.state", messageArgs.toArray(new String[0]));
     }
 
     private Action getChoiceAction(Question question) {
@@ -123,15 +120,15 @@ public class PresenterService {
     public void sayResult(Player player) {
         Long prize = Optional.ofNullable(player).map(Player::getLastPrize).map(Prize::getPrizeValue).orElse(0L);
         if (prize > 0L) {
-            outputUtils.displayByMessageKey("result.state.success", String.valueOf(prize));
+            outputUtils.displayColoredStatement(Color.GREEN, "result.state.success", String.valueOf(prize));
         } else {
-            outputUtils.displayByMessageKey("result.state.failure");
+            outputUtils.displayColoredStatement(Color.RED, "result.state.failure");
         }
         outputUtils.sleep(3.0);
     }
 
     public void congratulateWinnerPlayer() {
-        outputUtils.displayByMessageKey("winner.state.billionaire");
+        outputUtils.displayAsciiStatementByMessageKey(14, "winner.state.billionaire");
         outputUtils.sleep(3.0);
     }
 }

@@ -101,7 +101,7 @@ public class QuestionsGenerator {
         question.setStatement("Which of the following are considered to be real medical conditions?");
         question.setChoices(getChoices("Diabetes", "Anxiety disorders", "High blood pressure", "All of above"));
         question.setCorrectAnswer(4);
-        question.setPrize(Prize.F);
+        question.setPrize(Prize.H);
         question.setAnswerExplanation(
                 "Mental health issues and illnesses are just as real as physical illnesses. When they are mild you will often get better on your own the way you might from a cold but if you feel low for more than 2 or 3 weeks and the way you feel starts affecting the rest of your life you may need help. And with the right help you can make a full recovery.");
         questions.add(question);
