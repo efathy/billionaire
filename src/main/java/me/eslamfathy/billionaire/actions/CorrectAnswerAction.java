@@ -7,6 +7,7 @@ import me.eslamfathy.billionaire.service.PresenterService;
 public class CorrectAnswerAction implements Action {
     @Override
     public void doAction(GameContext gameContext, Question question) {
+        gameContext.getPlayer().setLastPrize(question.getPrize());
         PresenterService.getInstance().respondCorrectAnswer(question);
     }
 }

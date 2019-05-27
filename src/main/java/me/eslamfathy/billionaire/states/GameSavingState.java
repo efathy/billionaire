@@ -15,7 +15,7 @@ public class GameSavingState implements State {
             GameContextService.getInstance().save(gameContext);
             new OutputUtils().displayByMessageKey("game.saving.state.success");
         } catch (IOException e) {
-            new LoggerUtils().logError("Failed to save file", e);
+            LoggerUtils.getInstance().logError("Failed to save file", e);
             new OutputUtils().displayByMessageKey("game.saving.state.failed");
         }
         GameContextService.getInstance().goBackToMainMenu(gameContext);

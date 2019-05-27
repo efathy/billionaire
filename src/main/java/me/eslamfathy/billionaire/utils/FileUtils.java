@@ -17,6 +17,7 @@ public class FileUtils {
         if (isFolderExists(folderPath)) {
             try (Stream<Path> paths = Files.walk(Paths.get(folderPath))) {
                 return paths.filter(Files::isRegularFile).map(Path::getFileName).map(Path::toString)
+                            .map(s -> s.replace(Constants.SAVED_FILES_EXTENSION, ""))
                             .collect(Collectors.toList());
             }
         }

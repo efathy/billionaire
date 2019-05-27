@@ -12,7 +12,7 @@ public class ResultStateTest {
         GameContext gameContext = new GameContext();
         Question question = new Question();
         question.setPrize(Prize.A);
-        gameContext.getPlayer().setLastState(new QuestionState(question));
+        gameContext.getPlayer().setLastPrize(Prize.A);
 
         ResultState resultStage = new ResultState();
         resultStage.start(gameContext);

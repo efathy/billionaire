@@ -1,7 +1,6 @@
 package me.eslamfathy.billionaire.utils;
 
 public class OutputUtils {
-    private LoggerUtils loggerUtils = new LoggerUtils();
     private MessageUtils messageUtils = new MessageUtils();
 
     public void display(String message) {
@@ -16,7 +15,7 @@ public class OutputUtils {
         try {
             Thread.sleep((long) (seconds * 1000));
         } catch (InterruptedException e) {
-            loggerUtils.logError("Failed to sleep", e);
+            LoggerUtils.getInstance().logError("Failed to sleep", e);
         }
     }
 }

@@ -4,24 +4,27 @@ import me.eslamfathy.billionaire.actions.Action;
 import me.eslamfathy.billionaire.actions.ActionsFactory;
 import me.eslamfathy.billionaire.model.GameContext;
 import me.eslamfathy.billionaire.model.Player;
+import me.eslamfathy.billionaire.model.Prize;
 import me.eslamfathy.billionaire.model.Question;
-import me.eslamfathy.billionaire.states.QuestionState;
+import me.eslamfathy.billionaire.states.GameCreationState;
+import me.eslamfathy.billionaire.states.GameLoadingState;
 import me.eslamfathy.billionaire.states.State;
 import me.eslamfathy.billionaire.utils.Constants;
 import me.eslamfathy.billionaire.utils.FileUtils;
 import me.eslamfathy.billionaire.utils.OutputUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PresenterService {
     private OutputUtils outputUtils = new OutputUtils();
     private FileUtils fileUtils = new FileUtils();
     private static PresenterService presenterService;
+    private Map<String, State> mainMenuChoices;
 
     private PresenterService() {
+        mainMenuChoices = getMainMenuChoices();
     }
 
     public static PresenterService getInstance() {
@@ -41,13 +44,20 @@ public class PresenterService {
         outputUtils.sleep(1.0);
     }
 
-    public Integer askMainMenuChoices(Integer numberOfChoices) {
+    public State askMainMenuAndGetNextState() {
         outputUtils.displayByMessageKey("main.menu.state");
-        Integer choice = PlayerService.getInstance().choose();
-        if (choice < 0 || choice > numberOfChoices) {
-            choice = askMainMenuChoices(numberOfChoices);
+        String choice = PlayerService.getInstance().reply();
+        if (!mainMenuChoices.containsKey(choice)) {
+            return askMainMenuAndGetNextState();
         }
-        return choice;
+        return mainMenuChoices.get(choice);
+    }
+
+    private Map<String, State> getMainMenuChoices() {
+        Map<String, State> choices = new HashMap<>();
+        choices.put("1", new GameCreationState());
+        choices.put("2", new GameLoadingState());
+        return choices;
     }
 
     public String askPlayerName() {
@@ -62,7 +72,9 @@ public class PresenterService {
 
     public String askLoadFileName() throws IOException {
         List<String> savedFiles = fileUtils.getSavedFiles(Constants.SAVE_PATH);
-        outputUtils.display(savedFiles.stream().map(String::valueOf).collect(Collectors.joining()));
+        outputUtils
+                .display("Saves Available: " + savedFiles.stream().map(String::valueOf)
+                                                         .collect(Collectors.joining(" - ")));
         String fileName = PlayerService.getInstance().reply();
         if (!savedFiles.contains(fileName)) {
             fileName = askLoadFileName();
@@ -109,21 +121,17 @@ public class PresenterService {
     }
 
     public void sayResult(Player player) {
-        outputUtils.displayByMessageKey("result.state", getPrizeValue(player).toString());
+        Long prize = Optional.ofNullable(player).map(Player::getLastPrize).map(Prize::getPrizeValue).orElse(0L);
+        if (prize > 0L) {
+            outputUtils.displayByMessageKey("result.state.success", String.valueOf(prize));
+        } else {
+            outputUtils.displayByMessageKey("result.state.failure");
+        }
         outputUtils.sleep(3.0);
     }
 
     public void congratulateWinnerPlayer() {
         outputUtils.displayByMessageKey("winner.state.billionaire");
         outputUtils.sleep(3.0);
-    }
-
-    private Long getPrizeValue(Player player) {
-        State currentState = player.getLastState();
-        if (currentState instanceof QuestionState) {
-            QuestionState questionState = (QuestionState) currentState;
-            return questionState.getQuestion().getPrize().getPrizeValue();
-        }
-        return 0L;
     }
 }

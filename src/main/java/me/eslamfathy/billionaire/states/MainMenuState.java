@@ -7,7 +7,7 @@ import me.eslamfathy.billionaire.service.PresenterService;
 public class MainMenuState implements State {
     @Override
     public void start(GameContext gameContext) {
-        Integer choice = PresenterService.getInstance().askMainMenuChoices(2);
-        GameContextService.getInstance().addNextState(gameContext, choice == 1 ? new GameCreationState() : new GameLoadingState());
+        State nextState = PresenterService.getInstance().askMainMenuAndGetNextState();
+        GameContextService.getInstance().addNextState(gameContext, nextState);
     }
 }

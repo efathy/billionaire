@@ -17,10 +17,6 @@ public class PlayerService {
         return playerService;
     }
 
-    public Integer choose() {
-        return inputUtils.readInteger();
-    }
-
     public String reply() {
         return inputUtils.readString();
     }

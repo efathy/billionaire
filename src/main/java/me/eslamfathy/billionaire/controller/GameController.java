@@ -14,7 +14,6 @@ public class GameController {
             State currentState  = gameContext.getStates().poll();
             if(currentState != null) {
                 currentState.start(gameContext);
-                gameContext.getPlayer().setLastState(currentState);
             }
         }
     }

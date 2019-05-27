@@ -16,7 +16,7 @@ public class GameLoadingState implements State {
             gameContext.copy(GameContextService.getInstance().load(PresenterService.getInstance().askLoadFileName()));
             GameContextService.getInstance().addNextState(gameContext, new WelcomePlayerState());
         } catch (IOException | ClassNotFoundException e) {
-            new LoggerUtils().logError("Failed to load file", e);
+            LoggerUtils.getInstance().logError("Failed to load file", e);
             new OutputUtils().display("Failed to load file");
             GameContextService.getInstance().goBackToMainMenu(gameContext);
         }

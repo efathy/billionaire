@@ -9,8 +9,4 @@ public class InputUtils {
     public String readString() {
         return scanner.nextLine();
     }
-
-    public Integer readInteger() {
-        return scanner.nextInt();
-    }
 }

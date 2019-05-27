@@ -6,7 +6,6 @@ import me.eslamfathy.billionaire.utils.Constants;
 import me.eslamfathy.billionaire.utils.LoggerUtils;
 
 public class ActionsFactory {
-    private LoggerUtils loggerUtils = new LoggerUtils();
 
     private static ActionsFactory actionsFactory;
 
@@ -40,7 +39,7 @@ public class ActionsFactory {
             Integer.parseInt(value);
             return true;
         } catch (NumberFormatException e) {
-            loggerUtils.logDebug("choice wasn't number");
+            LoggerUtils.getInstance().logDebug("choice wasn't number");
             return false;
         }
     }

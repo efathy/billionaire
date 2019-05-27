@@ -1,19 +1,14 @@
 package me.eslamfathy.billionaire.model;
 
-import me.eslamfathy.billionaire.states.State;
+public class Player extends Human {
 
-import java.io.Serializable;
+    private Prize lastPrize;
 
-public class Player extends Human implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    private State lastState;
-
-    public State getLastState() {
-        return lastState;
+    public Prize getLastPrize() {
+        return lastPrize;
     }
 
-    public void setLastState(State lastState) {
-        this.lastState = lastState;
+    public void setLastPrize(Prize lastPrize) {
+        this.lastPrize = lastPrize;
     }
 }

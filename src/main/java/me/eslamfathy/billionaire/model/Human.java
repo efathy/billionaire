@@ -1,6 +1,10 @@
 package me.eslamfathy.billionaire.model;
 
-public class Human {
+import java.io.Serializable;
+
+public class Human implements Serializable {
+    protected static final long serialVersionUID = 1L;
+
     private String name;
 
     public String getName() {

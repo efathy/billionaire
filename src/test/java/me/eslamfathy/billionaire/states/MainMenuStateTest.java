@@ -22,7 +22,7 @@ public class MainMenuStateTest {
     public void startNewGame() {
         PowerMockito.mockStatic(PresenterService.class);
         Mockito.when(PresenterService.getInstance()).thenReturn(presenterService);
-        Mockito.when(presenterService.askMainMenuChoices(2)).thenReturn(1);
+        Mockito.when(presenterService.askMainMenuAndGetNextState()).thenReturn(new GameCreationState());
 
         MainMenuState mainMenuState = new MainMenuState();
         GameContext gameContext = new GameContext();
@@ -35,7 +35,7 @@ public class MainMenuStateTest {
     public void startLoadGame() {
         PowerMockito.mockStatic(PresenterService.class);
         Mockito.when(PresenterService.getInstance()).thenReturn(presenterService);
-        Mockito.when(presenterService.askMainMenuChoices(2)).thenReturn(2);
+        Mockito.when(presenterService.askMainMenuAndGetNextState()).thenReturn(new GameLoadingState());
 
         MainMenuState mainMenuState = new MainMenuState();
         GameContext gameContext = new GameContext();

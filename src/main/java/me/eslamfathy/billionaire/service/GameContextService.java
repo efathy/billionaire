@@ -52,7 +52,7 @@ public class GameContextService {
             GameContext gameContext = new GameContext();
             gameContext.getPlayer().setName(playerName);
             addQuestionsStates(gameContext);
-            addNextState(gameContext, new WinnerState());
+            gameContext.getStates().add(new WinnerState());
             return gameContext;
         }
         return null;

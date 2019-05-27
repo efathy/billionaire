@@ -110,9 +110,9 @@ public class QuestionsGenerator {
     }
 
     private Map getChoices(String... choices) {
-        Map<Integer, String> choicesMap = new HashMap<>();
+        Map<String, String> choicesMap = new HashMap<>();
         for (int i = 1; i <= choices.length; i++) {
-            choicesMap.put(i, choices[i-1]);
+            choicesMap.put(String.valueOf(i), choices[i - 1]);
         }
         return choicesMap;
     }
